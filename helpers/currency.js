@@ -21,7 +21,8 @@ exports.getRates = function(req, res){
         } else if (now < age + 3600000) {
             const rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
             const result = util.calcExchange(base, target, rates, amount);
-            if (result.toString().match("^[0-9]*$")){
+            console.log(result);
+            if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
                 res.send(JSON.stringify(result));
             } else {
                 res.send("Invalid base or target currency!");
