@@ -1,5 +1,6 @@
 const fs      = require("fs"),
-      util    = require("./currencyUtil");
+      util    = require("./currencyUtil"),
+      stats   = require("./stats");
 
 exports.getRates = function(req, res){
     const base   = req.query.base,
@@ -26,7 +27,7 @@ exports.getRates = function(req, res){
             
             //validate output
             if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
-                util.saveStats(target, result);
+                stats.save(target, result);
                 res.send(JSON.stringify(result));
             } else {
                 res.send("Invalid base or target currency!");
@@ -37,9 +38,14 @@ exports.getRates = function(req, res){
     }
 };
 
+//API test route
 exports.getIndex = function(req, res){
-    util.resetStats();
+    // stats.reset();
     res.send("Exchange rate server online");
+};
+
+exports.getStats = function(req, res){
+    res.send(JSON.stringify(stats.read()));
 };
 
 module.exports = exports;

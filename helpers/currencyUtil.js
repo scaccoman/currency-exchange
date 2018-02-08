@@ -32,6 +32,23 @@ exports.saveStats = function(target, amount){
     });
 };
 
+exports.readStats = function(){
+    const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
+    let result = {
+        topCurrency : "",
+        highestNum  : 0,
+        total       : 0
+    };
+    Object.keys(stats.currencies).forEach(function(key){
+        result.total += stats.currencies[key];
+        if (stats.currencies[key] > result.highestNum) {
+            result.topCurrency = key;
+            result.highestNum  = stats.currencies[key];
+        }
+    });
+    return result;
+};
+
 // exports.resetStats = function(){
 //     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
 //     Object.keys(stats.currencies).forEach(function(key){
