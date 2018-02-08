@@ -1,10 +1,10 @@
-var express    = require('express'),
-    app        = express(),
-    port       = process.env.PORT || 3000,
-    bodyParser = require('body-parser'),
-    morgan     = require('morgan');
+const express    = require('express'),
+      app        = express(),
+      port       = process.env.PORT || 3000,
+      bodyParser = require('body-parser'),
+      morgan     = require('morgan');
     
-var apiRoutes = require("./routes/currency");
+const apiRoutes = require("./routes/currency");
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
