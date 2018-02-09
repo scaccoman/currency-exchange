@@ -23,43 +23,6 @@ exports.requestRates = function(callback){
         });
 };
 
-exports.saveStats = function(target, amount){
-    const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
-    stats.currencies[target]++;
-    stats.total += amount;
-    fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){
-        console.log("stats stored successfully");
-    });
-};
-
-exports.readStats = function(){
-    const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
-    let result = {
-        topCurrency : "",
-        highestNum  : 0,
-        total       : 0
-    };
-    Object.keys(stats.currencies).forEach(function(key){
-        result.total += stats.currencies[key];
-        if (stats.currencies[key] > result.highestNum) {
-            result.topCurrency = key;
-            result.highestNum  = stats.currencies[key];
-        }
-    });
-    return result;
-};
-
-// exports.resetStats = function(){
-//     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
-//     Object.keys(stats.currencies).forEach(function(key){
-//         stats.currencies[key] = 0;
-//     });
-//     stats.total = 0;
-//     fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){
-//         console.log("stats reset successfully");
-//     });
-// };
-
 exports.calcExchange = function(base, target, rates, amount){
     const valueInUsd = (1 / rates[base]) * amount;
     const valueInTargetCurrency = valueInUsd * rates[target];

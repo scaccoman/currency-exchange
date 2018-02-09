@@ -1,6 +1,6 @@
 const fs      = require("fs"),
-      util    = require("./currencyUtil"),
-      stats   = require("./stats");
+      util    = require("./utility"),
+      stats   = require("../stats");
 
 exports.getRates = function(req, res){
     const base   = req.query.base,
@@ -15,7 +15,7 @@ exports.getRates = function(req, res){
         //if the exchange rates are older then 60 minutes, get new rates
         if (now >= age + 3600000) {
             util.requestRates(function(err, rates) {
-                if (err) return res.send(err);
+                if (err) return res.status(500).send(err);
                 const result = util.calcExchange(base, target, rates, amount);
                 res.send(JSON.stringify(result));
             });
@@ -30,11 +30,11 @@ exports.getRates = function(req, res){
                 stats.save(target, result);
                 res.send(JSON.stringify(result));
             } else {
-                res.send("Invalid base or target currency!");
+                res.status(500).send('Invalid base or target currency!');
             }
         }
     } else {
-        res.send("Invalid query parameters!");
+        res.status(500).send("Invalid query parameters!");
     }
 };
 

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var helpers = require("../helpers/currency");
+var helpers = require("../helpers/currency/currency");
 
 router.route('/')
  .get(helpers.getIndex);
