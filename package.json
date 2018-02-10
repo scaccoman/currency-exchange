@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "NODE_ENV=production node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Davide Marucci",
@@ -12,7 +13,9 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "fs": "0.0.1-security",
-    "morgan": "^1.9.0",
     "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "morgan": "^1.9.0"
   }
 }

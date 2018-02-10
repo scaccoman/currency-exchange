@@ -3,7 +3,14 @@ const fs = require("fs");
 exports.save = function(target, amount){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
     stats.currencies[target]++;
-    stats.total += amount;
+    stats.totalUSD += amount;
+    Object.keys(stats.currencies).forEach(function(key){
+        stats.totalReq += stats.currencies[key];
+        if (stats.currencies[key] > stats.highestNum) {
+            stats.topCurrency = key;
+            stats.highestNum  = stats.currencies[key];
+        }
+    });
     fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){
         console.log("stats stored successfully");
     });
@@ -11,20 +18,12 @@ exports.save = function(target, amount){
 
 exports.read = function(){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
-    let result = {
-        topCurrency : "",
-        highestNum  : 0,
-        totalReq    : 0,
-        totalUSD    : stats.total
+    return { 
+        totalReq: stats.totalReq,    
+        totalUSD: stats.totalUSD,
+        highestNum: stats.highestNum,
+        topCurrency: stats.topCurrency
     };
-    Object.keys(stats.currencies).forEach(function(key){
-        result.totalReq += stats.currencies[key];
-        if (stats.currencies[key] > result.highestNum) {
-            result.topCurrency = key;
-            result.highestNum  = stats.currencies[key];
-        }
-    });
-    return result;
 };
 
 // exports.reset = function(){
