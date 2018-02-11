@@ -42,7 +42,7 @@ exports.getRates = function(req, res){
 
 //API test route
 exports.getIndex = function(req, res){
-    stats.reset();
+    // stats.reset();
     res.send("Currency exchange server online");
 };
 
