@@ -5,6 +5,7 @@ body {
 }
 
 input {
+    width: 150px;
     padding: 10px;
     margin: 6px 0 4px;
     border: 1px solid #ccc;
