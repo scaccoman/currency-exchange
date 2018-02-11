@@ -10,19 +10,19 @@ exports.getRates = function(req, res){
     
     //check if query is valid
     if (util.validateQuery(base, target, amount)){
-        //read timestamp from json
+        //read timestamp in Seconds from json
         const age = JSON.parse(fs.readFileSync('./data/ratesAge.json', 'utf8'));
         //get actual time in Seconds
         const now = (new Date().getTime() / 1000).toFixed();
         //if the exchange rates are older then 10 minutes, get new rates
-        if (now >= age + 600) {
+        if (now <= age + 600) {
             util.requestRates(function(err, rates) {
                 if (err) return res.status(500).send(err);
                 const result = util.calcExchange(base, target, rates, amount);
                 res.send(JSON.stringify(result));
             });
         //otherwise read stored rates
-        } else if (now < age + 600) {
+        } else if (now > age + 600) {
             const rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
             const result = util.calcExchange(base, target, rates, amount);
             console.log(result);

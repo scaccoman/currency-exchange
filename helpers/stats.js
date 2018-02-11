@@ -23,7 +23,7 @@ exports.save = function(target, amount){
     };
     //save stats to disk
     fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){
-        console.log("stats stored successfully");
+        console.log("stats saved successfully");
     });
 };
 
