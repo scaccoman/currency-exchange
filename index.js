@@ -11,10 +11,10 @@ if (process.env.NODE_ENV !== "production"){
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname +'/client')); //SERVING STATIC HTML REACT BUILD
+app.use(express.static(__dirname +'/client/build')); //SERVING STATIC HTML REACT BUILD to change /client/build
 
 app.get('/', function(req, res){
-    res.sendFile("index.html");
+    res.sendFile(__dirname + 'index.html');
 });
 
 app.use('/api/', apiRoutes);

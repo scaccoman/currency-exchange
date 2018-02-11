@@ -41,11 +41,11 @@ exports.getRates = function(req, res){
 //API test route
 exports.getIndex = function(req, res){
     // stats.reset();
-    res.send("Exchange rate server online");
+    res.send("Currency exchange server online");
 };
 
 exports.getStats = function(req, res){
-    res.send(JSON.stringify(stats.read()));
+    res.send(JSON.stringify(stats.send()));
 };
 
 module.exports = exports;
