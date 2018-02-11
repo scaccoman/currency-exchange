@@ -32,7 +32,7 @@ exports.send = function(){
     return statsCache;
 };
 
-//first time only stats read
+//first time only, stats read
 function read(){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
     return {

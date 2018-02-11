@@ -3,24 +3,26 @@ const fs      = require("fs"),
       stats   = require("../stats");
 
 exports.getRates = function(req, res){
+    //exctract data from query
     const base   = req.query.base,
           target = req.query.target,
           amount = req.query.amount;
     
     //check if query is valid
     if (util.validateQuery(base, target, amount)){
+        //read timestamp from json
         const age = JSON.parse(fs.readFileSync('./data/ratesAge.json', 'utf8'));
-        const now = new Date().getTime();
-
-        //if the exchange rates are older then 60 minutes, get new rates
-        if (now >= age + 3600000) {
+        //get actual time in Seconds
+        const now = (new Date().getTime() / 1000).toFixed();
+        //if the exchange rates are older then 10 minutes, get new rates
+        if (now >= age + 600) {
             util.requestRates(function(err, rates) {
                 if (err) return res.status(500).send(err);
                 const result = util.calcExchange(base, target, rates, amount);
                 res.send(JSON.stringify(result));
             });
         //otherwise read stored rates
-        } else if (now < age + 3600000) {
+        } else if (now < age + 600) {
             const rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
             const result = util.calcExchange(base, target, rates, amount);
             console.log(result);
