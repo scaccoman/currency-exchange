@@ -13,9 +13,7 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "fs": "0.0.1-security",
-    "request": "^2.83.0"
-  },
-  "devDependencies": {
+    "request": "^2.83.0",
     "morgan": "^1.9.0"
   }
 }

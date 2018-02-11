@@ -6,9 +6,9 @@ const express    = require('express'),
     
 const apiRoutes = require("./routes/currency");
 
-if (process.env.NODE_ENV !== "production"){
+// if (process.env.NODE_ENV !== "production"){
     app.use(morgan('dev'));
-}
+// }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname +'/client/build')); //SERVING STATIC HTML REACT BUILD to change /client/build
