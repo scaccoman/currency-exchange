@@ -1,5 +1,5 @@
 const fs = require("fs");
-let statsCache = read(); //cache stats to avoid r/w conflicts
+let statsCache = read(); //local cache stats to avoid r/w conflicts
 
 exports.save = function(target, amount){
     //read stats from json

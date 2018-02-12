@@ -1,7 +1,11 @@
-var request = require("request"),
-    fs      = require("fs");
+const request = require("request"),
+      fs      = require("fs");
 const ROOT_URL = "https://openexchangerates.org/api/latest.json?app_id=";
 const API_KEY  = process.env.API_KEY || "f8e1c9cbfc18487ca598143236557288";
+
+//export cache variables
+exports.age   = JSON.parse(fs.readFileSync('./data/ratesAge.json', 'utf8'));
+exports.rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
 
 exports.requestRates = function(callback){
         request(ROOT_URL + API_KEY, function(error, response, body){
@@ -11,8 +15,10 @@ exports.requestRates = function(callback){
                 parsedBody.rates.USD = 1;
                 //store rates and timestamp in json files
                 fs.writeFile( "./data/rates.json", JSON.stringify(parsedBody.rates), "utf8", function(){
+                    exports.rates = parsedBody.rates;
                     console.log("rates stored successfully");
                     fs.writeFile( "./data/ratesAge.json", JSON.stringify(parsedBody.timestamp), "utf8", function(){
+                        exports.age = parsedBody.age;
                         console.log("age stored successfully");
                      });
                 });
