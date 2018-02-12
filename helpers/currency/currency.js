@@ -15,14 +15,14 @@ exports.getConversion = function(req, res){
         //get actual time in Seconds
         const now = (new Date().getTime() / 1000).toFixed();
         //if the exchange rates are older then 60 minutes, get new rates
-        if (now <= age + 3600) {
+        if (now >= age + 3600) {
             util.requestRates(function(err, rates) {
                 if (err) return res.status(500).send(err);
                 const result = util.calcExchange(base, target, rates, amount);
                 res.send(JSON.stringify(result));
             });
         //otherwise read stored rates
-        } else if (now > age + 3600) {
+        } else if (now < age + 3600) {
             const rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
             const result = util.calcExchange(base, target, rates, amount);
             console.log(result);
