@@ -29,7 +29,7 @@ exports.save = function(target, amount){
 
 //send cached stats
 exports.send = function(){
-    return statsCache;
+    return statsCache ? statsCache : read();
 };
 
 //first time only, stats read
