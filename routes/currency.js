@@ -9,6 +9,9 @@ router.route('/')
  .get(helpers.getStats);
  
 router.route('/calculate_exchange/') //?base=EUR&target=CZK&amount=123456
-  .get(helpers.getRates);
+  .get(helpers.getConversion);
+  //.post()
+  //.put()
+  //.delete()
   
 module.exports = router;
