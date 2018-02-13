@@ -11,7 +11,7 @@ const apiRoutes = require("./routes/currency");
 // }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname +'/client/build')); //SERVING STATIC HTML REACT BUILD to change /client/build
+app.use(express.static(__dirname +'/client/build')); //Serve static React build
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + 'index.html');

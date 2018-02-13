@@ -6,7 +6,7 @@ exports.save = function(target, amount){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
     stats.currencies[target]++;
     stats.totalUSD += amount;
-    //loop through currencies to get most used one and total amount converted
+    //loop through currencies to get most used one and number of conversions
     Object.keys(stats.currencies).forEach(function(key){
         stats.totalReq += stats.currencies[key];
         if (stats.currencies[key] > stats.highestNum) {

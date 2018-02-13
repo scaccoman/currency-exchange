@@ -7,13 +7,14 @@ const API_KEY  = process.env.API_KEY || "f8e1c9cbfc18487ca598143236557288";
 exports.age   = JSON.parse(fs.readFileSync('./data/ratesAge.json', 'utf8'));
 exports.rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
 
+//external API call, new rates available every 60 minutes with free account
 exports.requestRates = function(callback){
         request(ROOT_URL + API_KEY, function(error, response, body){
             if (!error && response.statusCode == 200){
-                //get rates data out of json
+                //get rates data out of response
                 const parsedBody = JSON.parse(body);
                 parsedBody.rates.USD = 1;
-                //store rates and timestamp in json files
+                //store and cache rates
                 fs.writeFile( "./data/rates.json", JSON.stringify(parsedBody.rates), "utf8", function(){
                     exports.rates = parsedBody.rates;
                     console.log("rates stored successfully");
@@ -29,7 +30,8 @@ exports.requestRates = function(callback){
         });
 };
 
-exports.calcExchange = function(base, target, rates, amount){
+//rates are provided only in USD base with free API key
+exports.calcExchange = function(base, target, amount, rates){
     const valueInUsd = (1 / rates[base]) * amount;
     const valueInTargetCurrency = valueInUsd * rates[target];
     return valueInTargetCurrency;
@@ -37,8 +39,8 @@ exports.calcExchange = function(base, target, rates, amount){
 
 exports.validateQuery = function(base, target, amount) {
     if (base.match("^[A-Z]{3}$") 
-        && target.match("^[A-Z]{3}$") 
-        && amount.toString().match("^[0-9]*$")) {
+    && target.match("^[A-Z]{3}$") 
+    && amount.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")) {
         return true;
     } else {
         return false;
