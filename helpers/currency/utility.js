@@ -13,7 +13,6 @@ exports.requestRates = function(callback){
             if (!error && response.statusCode == 200){
                 //get rates data out of response
                 const parsedBody = JSON.parse(body);
-                parsedBody.rates.USD = 1;
                 //store and cache rates
                 fs.writeFile( "./data/rates.json", JSON.stringify(parsedBody.rates), "utf8", function(){
                     exports.rates = parsedBody.rates;

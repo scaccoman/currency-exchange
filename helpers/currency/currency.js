@@ -17,7 +17,7 @@ exports.getConversion = function(req, res){
         if (now >= util.age + 3600) {
             util.requestRates(function(err, rates) {
                 if (err) return res.status(500).send(err);
-                const result = util.calcExchange(base, target, amount);
+                const result = util.calcExchange(base, target, amount, rates);
                 res.send(JSON.stringify(result));
             });
             
@@ -28,8 +28,8 @@ exports.getConversion = function(req, res){
             
             //validate output
             if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
-                stats.save(target, result);
                 res.send(JSON.stringify(result));
+                stats.save(target, result);
             } else {
                 res.status(500).send('Invalid base or target currency!');
             }
