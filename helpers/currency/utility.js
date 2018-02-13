@@ -46,4 +46,12 @@ exports.validateQuery = function(base, target, amount) {
     }
 };
 
+exports.validateOutput = function(result) {
+    if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
+        return true;
+    } else {
+        return false;
+    }
+};
+
 module.exports = exports;

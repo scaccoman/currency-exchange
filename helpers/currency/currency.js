@@ -12,28 +12,32 @@ exports.getConversion = function(req, res){
     if (util.validateQuery(base, target, amount)){
         //get time in Seconds
         const now = (new Date().getTime() / 1000).toFixed();
-        
         //if the exchange rates are older then 60 minutes, get new rates
         if (now >= util.age + 3600) {
             util.requestRates(function(err, rates) {
                 if (err) return res.status(500).send(err);
                 const result = util.calcExchange(base, target, amount, rates);
-                res.send(JSON.stringify(result));
+                
+                if (util.validateOutput(result)){
+                    res.send(JSON.stringify(result));
+                    stats.save(target, result);
+                } else {
+                    res.status(500).send('Invalid base or target currency!');
+                }
             });
             
         //otherwise read stored rates
         } else if (now < util.age + 3600) {;
             const result = util.calcExchange(base, target, amount, util.rates);
-            console.log(result);
             
-            //validate output
-            if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
+            if (util.validateOutput(result)){
                 res.send(JSON.stringify(result));
                 stats.save(target, result);
             } else {
                 res.status(500).send('Invalid base or target currency!');
             }
         }
+        
     } else {
         res.status(500).send("Invalid query parameters!");
     }

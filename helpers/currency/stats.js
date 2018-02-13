@@ -2,8 +2,8 @@ const fs = require("fs");
 let statsCache = read(); //local cache stats to avoid r/w conflicts
 
 exports.save = function(target, amount){
-    //read stats from json
-    const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
+    //read stats from cache or json
+    const stats = statsCache || JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
     stats.currencies[target]++;
     stats.totalUSD += amount;
     //loop through currencies to get most used one and number of conversions
@@ -15,15 +15,10 @@ exports.save = function(target, amount){
         }
     });
     //cache new stats
-    statsCache = {
-        totalReq: stats.totalReq,    
-        totalUSD: stats.totalUSD,
-        highestNum: stats.highestNum,
-        topCurrency: stats.topCurrency
-    };
+    statsCache = stats
     //save stats to disk
     fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){
-        console.log("stats saved successfully");
+        // console.log("stats saved successfully");
     });
 };
 
@@ -35,12 +30,7 @@ exports.send = function(){
 //first time only, stats read
 function read(){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
-    return {
-        totalReq: stats.totalReq,    
-        totalUSD: stats.totalUSD,
-        highestNum: stats.highestNum,
-        topCurrency: stats.topCurrency
-    };
+    return stats;
 }
 
 // exports.reset = function(){
