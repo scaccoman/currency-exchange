@@ -6,7 +6,7 @@ export const ROOT_URL    = "/api/";
 
 export function fetchExchange(amount, base, target) {
     const request = axios.get(`${ROOT_URL}calculate_exchange?base=${base}&target=${target}&amount=${amount}`);
-    
+    //axios's promise will automatically resolve and be sent as payload on complete
     return {
         type: FETCH_EXCHANGE,
         payload: request

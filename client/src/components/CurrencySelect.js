@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from 'prop-types'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-const BaseInput = (props) => {
+const CurrencySelect = ({selected, onChange, currencies}) => {
     
     return (
       <div className="select-wrapper">
@@ -12,12 +13,24 @@ const BaseInput = (props) => {
           autosize={true}
           clearable={false}
           arrowRenderer={null}
-          value={props.selected}
-          onChange={props.onChange}
-          options={props.currencies}
+          value={selected}
+          onChange={onChange}
+          options={currencies}
         />
       </div>
     );
 };
 
-export default BaseInput;
+CurrencySelect.propTypes = {
+  value: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired
+};
+
+CurrencySelect.defaultProps = {
+  value: 0,
+  onChange: () => {},
+  options: []
+};
+
+export default CurrencySelect;
