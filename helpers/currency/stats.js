@@ -1,5 +1,5 @@
 const fs = require("fs");
-let statsCache = read(); //local cache stats to avoid r/w conflicts
+let statsCache = read(); //cache stats for better performance
 
 exports.save = function(target, amount){
     //read stats from cache or json
@@ -14,7 +14,6 @@ exports.save = function(target, amount){
             stats.highestNum  = stats.currencies[key];
         }
     });
-    //cache new stats
     statsCache = stats
     //save stats to disk
     fs.writeFile( "./data/stats.json", JSON.stringify(stats), "utf8", function(){

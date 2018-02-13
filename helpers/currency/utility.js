@@ -11,18 +11,15 @@ exports.rates = JSON.parse(fs.readFileSync('./data/rates.json', 'utf8'));
 exports.requestRates = function(callback){
         request(ROOT_URL + API_KEY, function(error, response, body){
             if (!error && response.statusCode == 200){
-                //get rates data out of response
-                const parsedBody = JSON.parse(body);
-                //store and cache rates
-                fs.writeFile( "./data/rates.json", JSON.stringify(parsedBody.rates), "utf8", function(){
-                    exports.rates = parsedBody.rates;
+                //get rates data out of response and write to disk
+                const data = JSON.parse(body);
+                fs.writeFile( "./data/rates.json", JSON.stringify(data.rates), "utf8", function(){
                     console.log("rates stored successfully");
-                    fs.writeFile( "./data/ratesAge.json", JSON.stringify(parsedBody.timestamp), "utf8", function(){
-                        exports.age = parsedBody.age;
+                    fs.writeFile( "./data/ratesAge.json", JSON.stringify(data.timestamp), "utf8", function(){
                         console.log("age stored successfully");
                      });
                 });
-                callback(null, parsedBody.rates);
+                callback(null, data);
             } else {
                 callback(error);
             }
@@ -49,9 +46,8 @@ exports.validateQuery = function(base, target, amount) {
 exports.validateOutput = function(result) {
     if (result.toString().match("^[0-9]*[.]{1}[0-9]*$|^[0-9]*$")){
         return true;
-    } else {
-        return false;
     }
+    return false;
 };
 
 module.exports = exports;
