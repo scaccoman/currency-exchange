@@ -3,7 +3,7 @@ let statsCache = read(); //local cache stats to avoid r/w conflicts
 
 exports.save = function(target, amount){
     //read stats from cache or json
-    const stats = statsCache || JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
+    const stats = statsCache || read();
     stats.currencies[target]++;
     stats.totalUSD += amount;
     //loop through currencies to get most used one and number of conversions
@@ -27,7 +27,7 @@ exports.send = function(){
     return statsCache ? statsCache : read();
 };
 
-//first time only, stats read
+//first time, stats read
 function read(){
     const stats = JSON.parse(fs.readFileSync('./data/stats.json', 'utf8'));
     return stats;
