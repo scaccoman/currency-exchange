@@ -26,11 +26,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname +'/client/build')); //Serve static React build
 
 app.get('/', function(req, res){
-    res.type('application/javascript')
-    res.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'X-Content-Type-Options': 'nosniff'
-    });
     res.sendFile(__dirname + 'index.html');
 });
 
